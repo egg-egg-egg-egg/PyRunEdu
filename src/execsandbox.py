@@ -4,9 +4,42 @@ from streamlit_ace import st_ace
 
 FONT_SIZE = 14
 EXTRA_LINES = 2
+sendbox_settings = {
+        'os': None,  # 禁止访问os模块
+        'subprocess': None,  # 禁止访问subprocess模块
+        'pickle': None,  # 禁止访问pickle模块
+        'shutil': None,  # 禁止访问shutil模块
+        '__import__': None,  # 禁止动态导入模块
+        'eval': None,  # 禁止使用eval
+        'exec': None,  # 禁止使用exec
+        'globals': None,  # 禁止访问全局变量
+        'locals': None,  # 禁止访问局部变量
+        'open': None,  # 禁止使用open函数
+        'file': None,  # 禁止使用file类型
+        'execfile': None,  # 禁止使用execfile函数
+        'input': None,  # 禁止使用input函数
+        'raw_input': None,  # 禁止使用raw_input函数（Python 2）
+    }
 CODE_SPACE_SETTINGS = """
 {}
 """
+# CODE_SPACE_SETTINGS = {
+#     "public":"""
+# {}
+
+# """,
+#     "private":"""
+# import streamlit as st
+
+# print = st.write
+
+
+# """,
+# }
+# ks = sendbox_settings.keys()
+# s = f"{",".join(ks)} = [None]*{len(ks)}"
+# CODE_SPACE_SETTINGS["public"].format(s)
+# CONTENT = CODE_SPACE_SETTINGS["private"]+"\n"
 
 def editor(body="",
         button_label="Run",
@@ -122,4 +155,5 @@ def execbox(
 def _new_sandbox():
     import types
     module = types.ModuleType("__main__")
+    # module.__dict__.update()
     return module.__dict__
