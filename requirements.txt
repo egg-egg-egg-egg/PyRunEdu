@@ -1,2 +1,2 @@
 streamlit
-streamlit-monaco
+streamlit_monaco
