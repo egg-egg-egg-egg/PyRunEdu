@@ -103,7 +103,13 @@ ks = sendbox_settings.keys()
 s = f"{','.join(ks)} = [None]*{len(ks)}"
 CODE_SPACE_SETTINGS["public"] = CODE_SPACE_SETTINGS["public"].format(s)
 CONTENT = CODE_SPACE_SETTINGS["private"]+"\n"+CODE_SPACE_SETTINGS["public"]
-execbox(CONTENT,autorun=True)
+
+
+from src import coder as c
+
+code_block = c.CodeBlock()
+
+code_block()
 # try:
 #     exec(content, local_scope)
 # except Exception as e:
