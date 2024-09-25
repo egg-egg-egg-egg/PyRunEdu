@@ -38,7 +38,7 @@
 # if __name__ == "__main__":
 # 	run()
 import streamlit as st
-from src.execsandbox import execbox
+from src.set_sandbox import execbox
 
 st.set_page_config(
     page_title="Run Python",
