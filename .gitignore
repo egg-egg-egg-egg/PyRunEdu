@@ -1,4 +1,5 @@
-src\encryption.py
-src\__pycache__
-src\utils.py
+src/encryption.py
+src/__pycache__
+src/utils.py
 .streamlit/secrets.toml
+test
