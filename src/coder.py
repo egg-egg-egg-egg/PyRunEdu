@@ -8,34 +8,46 @@ import sys
 import io
 
 
-class CodeBlock:
+class CodeBlockOpt:
     """
-    将一些代码编辑器封装成的可编辑代码块
+    代码块的配置项选项
     """
     def __init__(self, 
-                 title: str = None, 
-                 description: str = None, 
+                 title: str = None, description: str = None, 
+                 run_button: bool = True,
+                 edit: bool = True,
                  preset_code: str = None, 
                  height: int = 300, 
                  language: str = "python", 
                  theme: str = "vs-dark"):
         
-        self.title = title
-        self.description = description
+        self.run_button: bool =run_button
+
+class CodeBlock:
+    """
+    将一些代码编辑器封装成的代码块，有最基本的运行代码功能
+    """
+    def __init__(self, 
+                 title: str = None, description: str = None, 
+                 run_button: bool = True,
+                 edit: bool = True,
+                 preset_code: str = None, 
+                 height: int = 300, 
+                 language: str = "python", 
+                 theme: str = "vs-dark"):
+        
         self.preset_code: str = preset_code, 
         self.height: int = height, 
         self.language: str = language, 
         self.theme: str = theme
 
-        self.user_code = ""
-
-    def displayBlock(self,):
-        # 在 Streamlit 页面上展示题目和代码输入框
-        if self.title:
-            st.markdown(self.title)
-        if self.description:
-            st.write(self.description)
+        self.user_code: str = ""
         
+        if title:
+            st.markdown(title)
+        if description:
+            st.write(description)
+  
         # 接收用户输入的代码
         self.user_code = st_monaco(
             value=self.preset_code,
@@ -45,8 +57,6 @@ class CodeBlock:
             minimap=True
         )
         
-        return self
-
     def run_code(self, code: str):
         # 捕获代码执行中的异常并展示到页面
         try:
