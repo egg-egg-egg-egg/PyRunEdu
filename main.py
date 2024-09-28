@@ -38,7 +38,7 @@
 # if __name__ == "__main__":
 # 	run()
 import streamlit as st
-from src.set_sandbox import execbox
+# from src.set_sandbox import execbox
 
 st.set_page_config(
     page_title="Run Python",
@@ -105,25 +105,17 @@ CODE_SPACE_SETTINGS["public"] = CODE_SPACE_SETTINGS["public"].format(s)
 CONTENT = CODE_SPACE_SETTINGS["private"]+"\n"+CODE_SPACE_SETTINGS["public"]
 
 
-from src import coder as c
 
-code_block = c.CodeBlock()
 
-code_block()
-# try:
-#     exec(content, local_scope)
-# except Exception as e:
-#     st.exception(e)
+def _new_sandbox():
+    import types
+    module = types.ModuleType("__main__")
+    return module.__dict__
+local_scope = _new_sandbox()
 
-# def _new_sandbox():
-#     import types
-#     module = types.ModuleType("__main__")
-#     return module.__dict__
-# local_scope = _new_sandbox()
+from streamlit_monaco import st_monaco
+code = st_monaco(language="python",minimap=True,theme="vs-dark")
 
-# exec("""
-# open = None
-# print = st.write
-# print(open)
-# """, local_scope)
-# # print(local_scope)
+if st.button("运行",key="code_run"):
+    exec(code, local_scope)
+# print(local_scope)

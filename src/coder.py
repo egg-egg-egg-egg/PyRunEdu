@@ -7,47 +7,34 @@ import traceback
 import sys
 import io
 
-
-class CodeBlockOpt:
-    """
-    代码块的配置项选项
-    """
-    def __init__(self, 
-                 title: str = None, description: str = None, 
-                 run_button: bool = True,
-                 edit: bool = True,
-                 preset_code: str = None, 
-                 height: int = 300, 
-                 language: str = "python", 
-                 theme: str = "vs-dark"):
-        
-        self.run_button: bool =run_button
-
+                
 class CodeBlock:
     """
     将一些代码编辑器封装成的代码块，有最基本的运行代码功能
     """
-    def __init__(self, 
-                 title: str = None, description: str = None, 
+    def __init__(self, title: str = None, description: str = None, 
                  run_button: bool = True,
                  edit: bool = True,
                  preset_code: str = None, 
                  height: int = 300, 
                  language: str = "python", 
-                 theme: str = "vs-dark"):
-        
+                 theme: str = "streamlit"):
+        self.title,self.description = title,description
         self.preset_code: str = preset_code, 
         self.height: int = height, 
         self.language: str = language, 
         self.theme: str = theme
 
         self.user_code: str = ""
-        
-        if title:
-            st.markdown(title)
-        if description:
-            st.write(description)
-  
+        self.render(edit,run_button)
+
+    def render(self, run_button: bool = True,edit: bool = True,):
+        """渲染代码块，并接收用户输入的代码"""
+        if self.title:
+            st.title(self.title)
+        if self.description:
+            st.write(self.description)
+
         # 接收用户输入的代码
         self.user_code = st_monaco(
             value=self.preset_code,
