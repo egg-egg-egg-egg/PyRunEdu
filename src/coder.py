@@ -7,28 +7,39 @@ import traceback
 import sys
 import io
 
+class BasicOpts:
+    __slots__ = ("opts",)
+
+    def update(self, **kwargs):
+        self.opts.update(kwargs)
+
+    def get(self, key: str):
+        return self.opts.get(key)
+
+class RunButtonOpts(BasicOpts):
+    def __init__(self) -> None:
+        self.opts = {
+            
+        }
                 
 class CodeBlock:
     """
-    将一些代码编辑器封装成的代码块，有最基本的运行代码功能
+    将一些代码编辑器封装成的代码块，有基本的运行代码功能
     """
-    def __init__(self, title: str = None, description: str = None, 
+    def __init__(self, 
                  run_button: bool = True,
-                 edit: bool = True,
-                 preset_code: str = None, 
+                 preset_code: str = "", 
                  height: int = 300, 
                  language: str = "python", 
-                 theme: str = "streamlit"):
-        self.title,self.description = title,description
-        self.preset_code: str = preset_code, 
-        self.height: int = height, 
-        self.language: str = language, 
-        self.theme: str = theme
+                 theme: str = "vs-dark"):
+        self._preset_code: str = preset_code, 
+        self._height: int = height, 
+        self._language: str = language, 
+        self._theme: str = theme
 
-        self.user_code: str = ""
-        self.render(edit,run_button)
+        self.run_button = run_button
 
-    def render(self, run_button: bool = True,edit: bool = True,):
+    def render(self):
         """渲染代码块，并接收用户输入的代码"""
         if self.title:
             st.title(self.title)
@@ -37,12 +48,15 @@ class CodeBlock:
 
         # 接收用户输入的代码
         self.user_code = st_monaco(
-            value=self.preset_code,
-            height=self.height,
-            language=self.language,
-            theme=self.theme,
+            value=self._preset_code,
+            height=self._height,
+            language=self._language,
+            theme=self._theme,
             minimap=True
         )
+
+        if self.run_button:
+            self.is_run = st.button("运行代码", key="run_code_") 
         
     def run_code(self, code: str):
         # 捕获代码执行中的异常并展示到页面
